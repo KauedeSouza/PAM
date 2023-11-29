@@ -13,7 +13,7 @@ const TabelaDeDados = () => {
   const tableHead = ['ID', 'Nome', 'CPF', 'Renda'];
 
 
-  const apiUrl = "http://localhost/pw/calculadoraImpostoDeRenda/controller/pessoa.php";
+  const apiUrl = "http://localhost/pw/ApiRestImpostoDeRenda/controller";
   React.useEffect(() => {
     getDataFromApi();
   }, []);
@@ -21,7 +21,7 @@ const TabelaDeDados = () => {
 // Função para fazer uma solicitação GET para a API
 const getDataFromApi = async () => {
   try {
-    const response = await fetch("http://localhost/pw/calculadoraImpostoDeRenda/controller/pessoa.php");
+    const response = await fetch("http://localhost/pw/ApiRestImpostoDeRenda/controller");
     const data = await response.json();
     console.log("Dados recebidos:", data);
     setTableData(data); // Define os dados da API na tabela
@@ -126,11 +126,16 @@ putDataToApi(exemploIdParaAtualizar, exemploNovosDados);
 
   const renderTableRows = () => {
     return tableData.map((rowData, index) => (
-    <Row data={[rowData.id, rowData.nome, rowData.cpf, rowData.renda]} style={styles.text} />
-
+      <Row data={[rowData.id, rowData.nome, rowData.cpf, rowData.renda]}>
+        <TouchableOpacity onPress={() => handleEdit(index)}>
+          <Text>Editar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDelete(index)}>
+          <Text>Excluir</Text>
+        </TouchableOpacity>
+      </Row>
     ));
   };
-
   const renderEditSection = () => {
     return editingIndex !== null && (
       <View style={styles.inputContainer}>
